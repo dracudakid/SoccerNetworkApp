@@ -85,4 +85,36 @@ public class MatchHelper {
         }
         return null;
     }
+
+    public Match getMatch(int match_id) {
+        Match m = null;
+        String sql =  "select match_id, field_id, host_id, status, maximum_players, price, start_time, end_time, " +
+                "is_verified, verification_code, created, updated, deleted " +
+                "from matches where match_id = " + match_id;
+        try {
+            SQLiteDatabase db = dbHelper.openDatabase();
+            Log.d("getMatch", sql);
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                m = new Match();
+                m.setMatch_id(cursor.getInt(0));
+                m.setField_id(cursor.getInt(1));
+                m.setHost_id(cursor.getInt(2));
+                m.setStatus(cursor.getInt(3));
+                m.setMaximum_players(cursor.getInt(4));
+                m.setPrice(cursor.getInt(5));
+                m.setStart_time(cursor.getString(6));
+                m.setEnd_time(cursor.getString(7));
+                m.setIs_verified(cursor.getInt(8)>0);
+                m.setVerification_code(cursor.getString(9));
+                m.setCreated(cursor.getString(10));
+                m.setUpdated(cursor.getString(11));
+                m.setDeleted(cursor.getString(12));
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return m;
+
+    }
 }
