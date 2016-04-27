@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fs.tandat.soccernetwork.YourMatchesFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TableLayout
+                android:id="@+id/tblYourMatches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*">
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:text="YOUR MATCHES"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_span="7"
+                        android:textAlignment="center"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <TextView
+                        android:text="Match ID"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="Field Name"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="Host Name"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="Max Players"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="Price"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="Start Time"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                    <TextView
+                        android:text="End Time"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        android:gravity="center"/>
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
