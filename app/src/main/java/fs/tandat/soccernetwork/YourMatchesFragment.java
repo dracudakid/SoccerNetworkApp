@@ -34,6 +34,7 @@ public class YourMatchesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Your matches");
         username = getArguments().getString("username");
         View view = inflater.inflate(R.layout.fragment_your_matches, container, false);
 //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -96,7 +97,7 @@ public class YourMatchesFragment extends Fragment {
                 tr.addView(txtMaxPlayers);
 
                 TextView txtPrice = new TextView(getActivity());
-                txtPrice.setText(m.getPrice() + "");
+                txtPrice.setText(m.getPriceString());
                 txtPrice.setLayoutParams(trParams);
                 txtPrice.setGravity(Gravity.CENTER_HORIZONTAL);
                 txtPrice.setTextSize(textSize);
@@ -104,15 +105,17 @@ public class YourMatchesFragment extends Fragment {
                 tr.addView(txtPrice);
 
                 TextView txtStartTime = new TextView(getActivity());
-                txtStartTime.setText(m.getStart_time());
+                txtStartTime.setText(m.getStart_time().replace(" ", "\n"));
                 txtStartTime.setLayoutParams(trParams);
                 txtStartTime.setTextSize(textSize);
+                txtStartTime.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 tr.addView(txtStartTime);
 
                 TextView txtEndTime = new TextView(getActivity());
-                txtEndTime.setText(m.getEnd_time());
+                txtEndTime.setText(m.getEnd_time().replace(" ", "\n"));
                 txtEndTime.setLayoutParams(trParams);
                 txtEndTime.setTextSize(textSize);
+                txtEndTime.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 tr.addView(txtEndTime);
 
                 tr.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -133,6 +136,7 @@ public class YourMatchesFragment extends Fragment {
                         fragment.setArguments(args);
 
                         ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
                         ft.commit();
                     }
                 });

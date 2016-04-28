@@ -35,6 +35,8 @@ public class UpcomingMatchesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // set Action Bar Title
+        getActivity().setTitle("Upcoming matches");
         username = getArguments().getString("username");
         View view = inflater.inflate(R.layout.fragment_upcoming_matches, container, false);
         tblUpcoming =(TableLayout) view.findViewById(R.id.tblUpcomingMatches);
@@ -91,22 +93,24 @@ public class UpcomingMatchesFragment extends Fragment {
                 tr.addView(txtMaxPlayers);
 
                 TextView txtPrice = new TextView(getActivity());
-                txtPrice.setText(m.getPrice() + "");
+                txtPrice.setText(m.getPriceString());
                 txtPrice.setLayoutParams(trParams);
                 txtPrice.setGravity(Gravity.CENTER);
                 txtPrice.setTextSize(textSize);
                 tr.addView(txtPrice);
 
                 TextView txtStartTime = new TextView(getActivity());
-                txtStartTime.setText(m.getStart_time());
+                txtStartTime.setText(m.getStart_time().replace(" ","\n"));
                 txtStartTime.setLayoutParams(trParams);
                 txtStartTime.setTextSize(textSize);
+                txtStartTime.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 tr.addView(txtStartTime);
 
                 TextView txtEndTime = new TextView(getActivity());
-                txtEndTime.setText(m.getEnd_time());
+                txtEndTime.setText(m.getEnd_time().replace(" ", "\n"));
                 txtEndTime.setLayoutParams(trParams);
                 txtEndTime.setTextSize(textSize);
+                txtEndTime.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 tr.addView(txtEndTime);
 
                 tr.setGravity(Gravity.CENTER);
@@ -129,6 +133,7 @@ public class UpcomingMatchesFragment extends Fragment {
                         fragment.setArguments(args);
 
                         ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
                         ft.commit();
                     }
                 });

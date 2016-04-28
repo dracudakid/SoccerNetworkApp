@@ -19,6 +19,24 @@ public class Field {
         return field_id;
     }
 
+
+    public Field() {
+    }
+
+    public Field(int field_id, String field_name, int district_id, String address, double latitude, double longitude,
+                 String phone_number, String created, String updated, String deleted) {
+        this.field_id = field_id;
+        this.field_name = field_name;
+        this.district_id = district_id;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.phone_number = phone_number;
+        this.created = created;
+        this.updated = updated;
+        this.deleted = deleted;
+    }
+
     public void setField_id(int field_id) {
         this.field_id = field_id;
     }

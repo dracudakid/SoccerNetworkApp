@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import fs.tandat.soccernetwork.bean.Field;
 
 /**
@@ -44,4 +46,26 @@ public class FieldHelper {
 
     }
 
+    public ArrayList<Field> getListField(){
+        String qr = "Select * from fields";
+        SQLiteDatabase db = dbHelper.openDatabase();
+        ArrayList<Field> fieldLst = new ArrayList<>();
+        Field field = null;
+        Cursor cursor = db.rawQuery(qr, null);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    field = new Field(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3),
+                            cursor.getDouble(4), cursor.getDouble(5), cursor.getString(6), cursor.getString(7),
+                            cursor.getString(8), cursor.getString(9));
+                    fieldLst.add(field);
+                    cursor.moveToNext();
+                }
+                return fieldLst;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

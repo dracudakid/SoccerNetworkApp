@@ -1,5 +1,6 @@
 package fs.tandat.soccernetwork.helpers;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,7 +32,8 @@ public class UserHelper {
     }
 
     public boolean addUser(User newUser) {
-        String sql = "INSERT INTO user_profiles(username, password, email, phone) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO user_profiles(username, password, email, phone_number, status, district_id, user_type, is_verified, created) " +
+                "VALUES(?, ?, ?, ?, 1, 1, 0, 0, CURRENT_TIMESTAMP)";
         boolean check = false;
         try {
             SQLiteDatabase db = dbHelper.openDatabase();
@@ -87,5 +89,15 @@ public class UserHelper {
             }
         }
         return user;
+    }
+
+    public void updateUser(int id,String username,String password, String email, String phone) {
+        SQLiteDatabase db = dbHelper.openDatabase();
+        ContentValues newValues = new ContentValues();
+        newValues.put("username", username);
+        newValues.put("password",password);
+        newValues.put("email", email);
+        newValues.put("phone_number",phone);
+        db.update("user_profiles", newValues, "user_id="+id, null);
     }
 }

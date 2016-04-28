@@ -1,11 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
-    tools:context="fs.tandat.soccernetwork.MatchDetailFragment"
     android:background="@color/chromeish04">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,63 +14,42 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MATCH DETAILS"
+                android:text="EDIT MATCH"
                 android:textSize="24dp"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/chromeish01"/>
-
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapMatch"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_weight="0.5"
                 android:padding="14dp">
-
             </com.google.android.gms.maps.MapView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="14dp"
-                    android:background="@color/chromeish04">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Remaining Slots: "
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:id="@+id/txtRemainingSlots"
-                        android:textSize="16dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="14dp"
                     android:background="@color/chromeish03">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Field name: "
                         android:layout_weight="1"
-                        android:text="Match Field: "
+                        android:gravity="center_vertical"
                         android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/txtFieldName"
+
+                    <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:id="@+id/fieldSpn"
+                        android:layout_weight="1" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,17 +59,16 @@
                     android:background="@color/chromeish04">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_height="match_parent"
                         android:text="Address: "
-                        android:textSize="16dp"
-                        />
+                        android:layout_weight="1"
+                        android:textSize="16dp"/>
+
                     <TextView
-                        android:id="@+id/txtAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/addressTxt"
                         android:layout_weight="1"
-                        android:text="Au co"
                         android:textSize="16dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -103,17 +79,17 @@
                     android:background="@color/chromeish03">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Host User: "
                         android:layout_weight="1"
-                        android:text="Host player: "
                         android:textSize="16dp"/>
+
                     <TextView
-                        android:id="@+id/txtHostPlayer"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hostUserTxt"
+                        android:textSize="16dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,17 +99,17 @@
                     android:background="@color/chromeish04">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Max player: "
                         android:layout_weight="1"
-                        android:text="Max Players: "
                         android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/txtMaxPlayers"
+
+                    <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/maxPlayerTxt"
+                        android:inputType="number"
+                        android:layout_weight="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,17 +119,17 @@
                     android:background="@color/chromeish03">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Price: "
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/txtPrice"
+                        android:layout_height="wrap_content"
+                        android:text="Price (VNĐ):"
+                        android:textSize="16dp"
+                        android:layout_weight="1"/>
+
+                    <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/priceTxt"
+                        android:inputType="number"
+                        android:layout_weight="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,17 +139,22 @@
                     android:background="@color/chromeish04">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:text="Start Time: "
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/txtStartTime"
+                        android:textSize="16dp"
+                        android:layout_weight="1"/>
+                    <Button
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:text="Select date"
+                        android:id="@+id/btn_date_start"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select time"
+                        android:id="@+id/btn_time_start"
+                        android:layout_weight="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -183,23 +164,51 @@
                     android:background="@color/chromeish03">
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:text="End Time: "
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:id="@+id/txtEndTime"
+                        android:textSize="16dp"
+                        android:layout_weight="1"/>
+                    <Button
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Au co"
-                        android:textSize="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:text="Select date"
+                        android:id="@+id/btn_date_end"
+                        android:layout_weight="1" />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select time"
+                        android:id="@+id/btn_time_end"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp"
+                    android:background="@color/chromeish04">
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp"
+                    android:background="@color/chromeish03">
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp"
+                    android:background="@color/chromeish04">
+
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/right_labels"
         android:layout_width="wrap_content"
@@ -218,24 +227,23 @@
         android:layout_gravity="right|bottom">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabJoinMatch"
+            android:id="@+id/fabUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/join_icon"
+            fab:fab_icon="@drawable/edit_icon"
             fab:fab_colorNormal="@color/white"
-            fab:fab_title="Join this match"
+            fab:fab_title="Update"
             fab:fab_colorPressed="@color/white_pressed"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabSetUpMatch"
+            android:id="@+id/fabDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            fab:fab_icon="@drawable/delete_icon"
             fab:fab_colorNormal="@color/white"
             fab:fab_size="mini"
-            fab:fab_title="Set up your new match"
+            fab:fab_title="Delete"
             fab:fab_colorPressed="@color/white_pressed"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-
 </FrameLayout>

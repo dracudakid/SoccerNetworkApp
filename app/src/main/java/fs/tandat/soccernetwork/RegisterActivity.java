@@ -1,5 +1,6 @@
 package fs.tandat.soccernetwork;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -75,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
             UserHelper userHelper = new UserHelper(RegisterActivity.this);
             if(userHelper.addUser(newUser)){
                 Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(in);
             } else{
                 Toast.makeText(RegisterActivity.this, "Register failed", Toast.LENGTH_SHORT).show();
             }

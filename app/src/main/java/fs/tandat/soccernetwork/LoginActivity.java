@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Login");
         setContentView(R.layout.activity_login);
 
 
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             if (userHelper.checkUser(username, password)){
                 Log.d("LOGIN", username + " " + password);
                 Intent in = new Intent(LoginActivity.this, MainActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 in.putExtra("username", username);
 //                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //                SharedPreferences.Editor editor = prefs.edit();

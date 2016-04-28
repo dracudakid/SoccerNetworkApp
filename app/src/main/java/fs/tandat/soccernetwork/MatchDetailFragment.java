@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +50,7 @@ public class MatchDetailFragment extends Fragment{
     private TextView txtEndTime;
     private TextView txtRemainingSlots;
     private com.getbase.floatingactionbutton.FloatingActionButton fabJoinMatch;
+    private com.getbase.floatingactionbutton.FloatingActionButton fabSetUpMatch;
 
     SupportMapFragment sMapFragment;
 
@@ -62,11 +62,13 @@ public class MatchDetailFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Match Details");
         sMapFragment = SupportMapFragment.newInstance();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_match_detail, container, false);
         // get Attribute
         username = getArguments().getString("username");
+        user_id = (new UserHelper(getActivity())).getUser(username).getUser_id();
         match_id = getArguments().getInt("match_id");
         // get map fragment
         FragmentManager fm = getChildFragmentManager();
@@ -74,7 +76,6 @@ public class MatchDetailFragment extends Fragment{
         sMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                Log.d("LATLNG", lattitude + "--"+longitude);
                 LatLng latLng = new LatLng(lattitude, longitude);
                 googleMap.addMarker(new MarkerOptions().position(latLng).title(txtFieldName.getText().toString()));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -94,85 +95,127 @@ public class MatchDetailFragment extends Fragment{
         txtEndTime = (TextView)view.findViewById(R.id.txtEndTime);
         txtRemainingSlots = (TextView) view.findViewById(R.id.txtRemainingSlots);
         fabJoinMatch = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabJoinMatch);
+        fabSetUpMatch = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabSetUpMatch);
+
 
         // get data from database
         final MatchHelper matchHelper = new MatchHelper(getActivity());
         FieldHelper fieldHelper = new FieldHelper(getActivity());
         final Match m = matchHelper.getMatch(match_id);
         User u;
-        if(m!= null){
+        if(m!= null) {
             Field f = fieldHelper.getField(m.getField_id());
-            if(f!=null){
+            if (f != null) {
                 u = (new UserHelper(getActivity())).getUserByUserId(m.getHost_id());
+
                 int remainingSlots = matchHelper.getRemainingSlots(match_id);
-                txtRemainingSlots.setText(remainingSlots+"");
+                txtRemainingSlots.setText(remainingSlots + "");
                 txtFieldName.setText(f.getField_name());
                 txtAddress.setText(f.getAddress());
                 txtHostPlayer.setText(u.getUsername());
-                txtMaxPlayers.setText(m.getMaximum_players()+"");
-                txtPrice.setText(m.getPrice()+"");
+                txtMaxPlayers.setText(m.getMaximum_players() + "");
+                txtPrice.setText(m.getPriceString());
                 txtStartTime.setText(m.getStart_time());
                 txtEndTime.setText(m.getEnd_time());
                 lattitude = f.getLatitude();
                 longitude = f.getLongitude();
             }
-        }
 
-        // button join match
-        fabJoinMatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder aDialogBulder = new AlertDialog.Builder(getActivity());
-                aDialogBulder.setTitle("Join this match?");
-                final EditText input = new EditText(getActivity());
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setHint("How many slots do you want to reserve?");
-                aDialogBulder.setView(input);
-                aDialogBulder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                aDialogBulder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                final AlertDialog dialog = aDialogBulder.create();
-                dialog.show();
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+
+            // button join match
+            fabJoinMatch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog.Builder aDialogBulder = new AlertDialog.Builder(getActivity());
+                    aDialogBulder.setTitle("Join this match?");
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    input.setHint("How many slots do you want to reserve?");
+                    aDialogBulder.setView(input);
+                    aDialogBulder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    aDialogBulder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    final AlertDialog dialog = aDialogBulder.create();
+                    dialog.show();
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int num_slots = Integer.parseInt(input.getText().toString());
+                            int remainingSlots = matchHelper.getRemainingSlots(match_id);
+                            if (num_slots > remainingSlots) {
+                                input.setError("Does not have enough slots.");
+                            } else {
+                                SlotHelper slotHelper = new SlotHelper(getActivity());
+                                User u = new UserHelper(getActivity()).getUser(username);
+                                if (slotHelper.addSlots(match_id, u.getUser_id(), num_slots)) {
+                                    Toast.makeText(getActivity(), "Join match succesfully", Toast.LENGTH_SHORT).show();
+                                }
+
+                                // load lai fragment
+                                MatchDetailFragment fragment = new MatchDetailFragment();
+                                // set Arguments
+                                Bundle args = new Bundle();
+                                args.putString("username", username);
+                                args.putInt("match_id", m.getMatch_id());
+                                fragment.setArguments(args);
+
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                ft.replace(R.id.fragment_container, fragment);
+                                ft.commit();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+
+            // if login user is the host of the match, fabSetupMatch --> editMatch
+            if (user_id == m.getHost_id()){
+                fabSetUpMatch.setTitle("Edit this match");
+                fabSetUpMatch.setIcon(R.drawable.update_icon);
+                fabSetUpMatch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int num_slots = Integer.parseInt(input.getText().toString());
-                        int remainingSlots = matchHelper.getRemainingSlots(match_id);
-                        if(num_slots > remainingSlots){
-                            input.setError("Does not have enough slots.");
-                        }
-                        else{
-                            SlotHelper slotHelper = new SlotHelper(getActivity());
-                            User u = new UserHelper(getActivity()).getUser(username);
-                            if(slotHelper.addSlots(match_id, u.getUser_id(), num_slots)){
-                                Toast.makeText(getActivity(), "Join match succesfully", Toast.LENGTH_SHORT).show();
-                            }
-
-                            // load lai fragment
-                            MatchDetailFragment fragment = new MatchDetailFragment();
-                            // set Arguments
-                            Bundle args = new Bundle();
-                            args.putString("username", username);
-                            args.putInt("match_id", m.getMatch_id());
-                            fragment.setArguments(args);
-
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.replace(R.id.fragment_container, fragment);
-                            ft.commit();
-                            dialog.dismiss();
-                        }
+                        EditMatchFragment editMatchFragment = new EditMatchFragment();
+                        Bundle args = new Bundle();
+                        args.putString("username", username);
+                        args.putInt("match_id", match_id);
+                        editMatchFragment.setArguments(args);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, editMatchFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
                     }
                 });
             }
-        });
+            // fabSetupMatch --> create new match
+            else{
+                fabSetUpMatch.setTitle("Create new match");
+                fabSetUpMatch.setIcon(R.drawable.new_icon);
+                fabSetUpMatch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CreateAMatchFragment setUpMatch = new CreateAMatchFragment();
+                        Bundle args = new Bundle();
+                        args.putString("username", username);
+                        args.putInt("match_id", match_id);
+                        setUpMatch.setArguments(args);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, setUpMatch);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+            }
+        }
         return view;
     }
 }

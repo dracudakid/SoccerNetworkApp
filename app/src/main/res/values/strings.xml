@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SoccerNetwork</string>
+    <string name="app_name">Soccer Network</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_login">Login</string>

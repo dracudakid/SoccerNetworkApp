@@ -1,5 +1,8 @@
 package fs.tandat.soccernetwork.bean;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  * Created by dracu on 24/04/2016.
  */
@@ -76,9 +79,12 @@ public class Match {
     public void setMaximum_players(int maximum_players) {
         this.maximum_players = maximum_players;
     }
-
-    public int getPrice() {
+    public int getPrice(){
         return price;
+    }
+
+    public String getPriceString() {
+        return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(price);
     }
 
     public void setPrice(int price) {

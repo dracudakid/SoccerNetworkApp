@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fs.tandat.soccernetwork.YourMatchesFragment">
+    tools:context="fs.tandat.soccernetwork.YourMatchesFragment"
+    android:background="@color/chromeish04">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -86,7 +87,7 @@
                             android:gravity="center"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:textSize="16dp"/>
                         <TextView
                             android:text="End Time"
@@ -95,7 +96,7 @@
                             android:gravity="center"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:textSize="16dp"/>
                     </TableRow>
 

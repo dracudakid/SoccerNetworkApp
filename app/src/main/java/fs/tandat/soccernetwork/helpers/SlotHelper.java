@@ -1,6 +1,7 @@
 package fs.tandat.soccernetwork.helpers;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
@@ -30,5 +31,21 @@ public class SlotHelper {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public int getReservedSlots(int match_id) {
+        int slots = 0;
+        String sql = "select sum(quantity) from slots where match_id = " + match_id;
+        try{
+            SQLiteDatabase db = dbHelper.openDatabase();
+            Cursor cursor = db.rawQuery(sql, null);
+            if(cursor != null && cursor.moveToFirst()){
+                slots = cursor.getInt(0);
+            }
+            dbHelper.closeDatabase();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return slots;
     }
 }

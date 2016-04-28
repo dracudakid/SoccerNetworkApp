@@ -120,7 +120,13 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, upcomingMatchesFragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_setup_match) {
-
+            CreateAMatchFragment setUpMatch = new CreateAMatchFragment();
+            Bundle args = new Bundle();
+            args.putString("username", username);
+            setUpMatch.setArguments(args);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, setUpMatch);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
