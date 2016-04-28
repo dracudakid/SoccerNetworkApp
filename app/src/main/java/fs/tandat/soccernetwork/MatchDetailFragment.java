@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,14 +96,15 @@ public class MatchDetailFragment extends Fragment{
         fabJoinMatch = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabJoinMatch);
 
         // get data from database
-        MatchHelper matchHelper = new MatchHelper(getActivity());
+        final MatchHelper matchHelper = new MatchHelper(getActivity());
         FieldHelper fieldHelper = new FieldHelper(getActivity());
-        Match m = matchHelper.getMatch(match_id);
+        final Match m = matchHelper.getMatch(match_id);
+        User u;
         if(m!= null){
             Field f = fieldHelper.getField(m.getField_id());
             if(f!=null){
-                User u = (new UserHelper(getActivity())).getUserByUserId(m.getHost_id());
-                int remainingSlots = m.getMaximum_players() - matchHelper.getMaximumPlayers(match_id);
+                u = (new UserHelper(getActivity())).getUserByUserId(m.getHost_id());
+                int remainingSlots = matchHelper.getRemainingSlots(match_id);
                 txtRemainingSlots.setText(remainingSlots+"");
                 txtFieldName.setText(f.getField_name());
                 txtAddress.setText(f.getAddress());
@@ -116,6 +118,7 @@ public class MatchDetailFragment extends Fragment{
             }
         }
 
+        // button join match
         fabJoinMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,12 +131,6 @@ public class MatchDetailFragment extends Fragment{
                 aDialogBulder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int num_slots = Integer.parseInt(input.getText().toString());
-                        SlotHelper slotHelper = new SlotHelper(getActivity());
-                        User u = new UserHelper(getActivity()).getUser(username);
-                        if(slotHelper.addSlots(match_id, u.getUser_id(), num_slots)){
-                            Toast.makeText(getActivity(),"Hello", Toast.LENGTH_LONG).show();
-                        }
                     }
                 });
                 aDialogBulder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -142,8 +139,38 @@ public class MatchDetailFragment extends Fragment{
                         dialog.cancel();
                     }
                 });
-                aDialogBulder.show();
+                final AlertDialog dialog = aDialogBulder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int num_slots = Integer.parseInt(input.getText().toString());
+                        int remainingSlots = matchHelper.getRemainingSlots(match_id);
+                        if(num_slots > remainingSlots){
+                            input.setError("Does not have enough slots.");
+                        }
+                        else{
+                            SlotHelper slotHelper = new SlotHelper(getActivity());
+                            User u = new UserHelper(getActivity()).getUser(username);
+                            if(slotHelper.addSlots(match_id, u.getUser_id(), num_slots)){
+                                Toast.makeText(getActivity(), "Join match succesfully", Toast.LENGTH_SHORT).show();
+                            }
 
+                            // load lai fragment
+                            MatchDetailFragment fragment = new MatchDetailFragment();
+                            // set Arguments
+                            Bundle args = new Bundle();
+                            args.putString("username", username);
+                            args.putInt("match_id", m.getMatch_id());
+                            fragment.setArguments(args);
+
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, fragment);
+                            ft.commit();
+                            dialog.dismiss();
+                        }
+                    }
+                });
             }
         });
         return view;

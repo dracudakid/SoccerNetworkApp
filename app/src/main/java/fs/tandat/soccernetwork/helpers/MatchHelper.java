@@ -118,11 +118,11 @@ public class MatchHelper {
 
     }
 
-    public int getMaximumPlayers(int match_id){
-        String sql = "select maximum_players from matches where match_id = " + match_id;
+    public int getRemainingSlots(int match_id){
+        String sql = "select maximum_players - sum(quantity) from matches join slots on matches.match_id = slots.match_id where matches.match_id=" + match_id;
         try{
             SQLiteDatabase db = dbHelper.openDatabase();
-            Log.d("getMaximumPlayers", sql);
+            Log.d("getRemainingSlots", sql);
             Cursor cursor = db.rawQuery(sql, null);
             if(cursor != null && cursor.moveToFirst())
                 Log.d("CURSOR", cursor.getInt(0)+"");
