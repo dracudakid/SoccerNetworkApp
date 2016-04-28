@@ -1,16 +1,19 @@
 package fs.tandat.soccernetwork;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,8 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fs.tandat.soccernetwork.bean.Field;
 import fs.tandat.soccernetwork.bean.Match;
+import fs.tandat.soccernetwork.bean.User;
 import fs.tandat.soccernetwork.helpers.FieldHelper;
 import fs.tandat.soccernetwork.helpers.MatchHelper;
+import fs.tandat.soccernetwork.helpers.SlotHelper;
+import fs.tandat.soccernetwork.helpers.UserHelper;
 
 
 /**
@@ -31,6 +37,7 @@ import fs.tandat.soccernetwork.helpers.MatchHelper;
 public class MatchDetailFragment extends Fragment{
     private String username;
     private int match_id;
+    private int user_id;
     private double lattitude;
     private double longitude;
 
@@ -41,6 +48,8 @@ public class MatchDetailFragment extends Fragment{
     private TextView txtPrice;
     private TextView txtStartTime;
     private TextView txtEndTime;
+    private TextView txtRemainingSlots;
+    private com.getbase.floatingactionbutton.FloatingActionButton fabJoinMatch;
 
     SupportMapFragment sMapFragment;
 
@@ -82,6 +91,8 @@ public class MatchDetailFragment extends Fragment{
         txtPrice = (TextView)view.findViewById(R.id.txtPrice);
         txtStartTime = (TextView)view.findViewById(R.id.txtStartTime);
         txtEndTime = (TextView)view.findViewById(R.id.txtEndTime);
+        txtRemainingSlots = (TextView) view.findViewById(R.id.txtRemainingSlots);
+        fabJoinMatch = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabJoinMatch);
 
         // get data from database
         MatchHelper matchHelper = new MatchHelper(getActivity());
@@ -90,9 +101,12 @@ public class MatchDetailFragment extends Fragment{
         if(m!= null){
             Field f = fieldHelper.getField(m.getField_id());
             if(f!=null){
+                User u = (new UserHelper(getActivity())).getUserByUserId(m.getHost_id());
+                int remainingSlots = m.getMaximum_players() - matchHelper.getMaximumPlayers(match_id);
+                txtRemainingSlots.setText(remainingSlots+"");
                 txtFieldName.setText(f.getField_name());
                 txtAddress.setText(f.getAddress());
-                txtHostPlayer.setText(m.getHost_id()+"");
+                txtHostPlayer.setText(u.getUsername());
                 txtMaxPlayers.setText(m.getMaximum_players()+"");
                 txtPrice.setText(m.getPrice()+"");
                 txtStartTime.setText(m.getStart_time());
@@ -101,6 +115,37 @@ public class MatchDetailFragment extends Fragment{
                 longitude = f.getLongitude();
             }
         }
+
+        fabJoinMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder aDialogBulder = new AlertDialog.Builder(getActivity());
+                aDialogBulder.setTitle("Join this match?");
+                final EditText input = new EditText(getActivity());
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.setHint("How many slots do you want to reserve?");
+                aDialogBulder.setView(input);
+                aDialogBulder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int num_slots = Integer.parseInt(input.getText().toString());
+                        SlotHelper slotHelper = new SlotHelper(getActivity());
+                        User u = new UserHelper(getActivity()).getUser(username);
+                        if(slotHelper.addSlots(match_id, u.getUser_id(), num_slots)){
+                            Toast.makeText(getActivity(),"Hello", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                aDialogBulder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                aDialogBulder.show();
+
+            }
+        });
         return view;
     }
 }

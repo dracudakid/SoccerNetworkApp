@@ -117,4 +117,19 @@ public class MatchHelper {
         return m;
 
     }
+
+    public int getMaximumPlayers(int match_id){
+        String sql = "select maximum_players from matches where match_id = " + match_id;
+        try{
+            SQLiteDatabase db = dbHelper.openDatabase();
+            Log.d("getMaximumPlayers", sql);
+            Cursor cursor = db.rawQuery(sql, null);
+            if(cursor != null && cursor.moveToFirst())
+                Log.d("CURSOR", cursor.getInt(0)+"");
+                return cursor.getInt(0);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return 0;
+    }
 }

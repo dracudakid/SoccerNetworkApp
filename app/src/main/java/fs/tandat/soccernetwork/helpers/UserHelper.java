@@ -70,4 +70,22 @@ public class UserHelper {
         }
         return user;
     }
+
+    public User getUserByUserId(int user_id) {
+        String sql = String.format("select * from user_profiles where user_id=%d", user_id);
+        SQLiteDatabase db = dbHelper.openDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        Log.d("getUser", sql);
+        User user = null;
+        if(cursor != null){
+            if(cursor.moveToFirst()) {
+                boolean is_verfified = cursor.getInt(9) > 0;
+                user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+                        cursor.getInt(7), cursor.getString(8), is_verfified, cursor.getString(10),
+                        cursor.getString(11), cursor.getString(12), cursor.getString(13));
+            }
+        }
+        return user;
+    }
 }

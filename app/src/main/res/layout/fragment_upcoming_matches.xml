@@ -42,7 +42,7 @@
                             android:typeface="serif"
                             android:gravity="center"
                             android:layout_margin="5dp"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:textSize="16dp"/>
                         <TextView
                             android:text="Field Name"

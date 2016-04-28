@@ -30,6 +30,25 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="14dp"
+                    android:background="@color/chromeish04">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remaining Slots: "
+                        android:textSize="16dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/txtRemainingSlots"
+                        android:textSize="16dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="14dp"
                     android:background="@color/chromeish03">
                     <TextView
                         android:layout_width="match_parent"
@@ -189,6 +208,7 @@
         android:layout_gravity="right|bottom">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabJoinMatch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_icon="@drawable/ic_fab_star"

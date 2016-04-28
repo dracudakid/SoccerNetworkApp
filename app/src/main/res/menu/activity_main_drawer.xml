@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/user"
             android:title="Profile" />
         <item
             android:id="@+id/nav_your_matches"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/people"
             android:title="Your matches" />
         <item
             android:id="@+id/nav_upcoming_matches"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/field"
             android:title="Upcoming matches" />
         <item
             android:id="@+id/nav_setup_match"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ball"
             android:title="Set up a match" />
     </group>
 
