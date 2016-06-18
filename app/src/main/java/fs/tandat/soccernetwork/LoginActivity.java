@@ -1,7 +1,9 @@
 package fs.tandat.soccernetwork;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtPassword;
     Button btLogin;
     Button btRegister;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        MultiDex.install(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

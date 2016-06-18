@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import fs.tandat.soccernetwork.bean.User;
 import fs.tandat.soccernetwork.helpers.UserHelper;
 
@@ -74,6 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
         if(validate= true){
             User newUser = new User(username, password, email, phone);
             UserHelper userHelper = new UserHelper(RegisterActivity.this);
+
+
             if(userHelper.addUser(newUser)){
                 Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
                 Intent in = new Intent(RegisterActivity.this, LoginActivity.class);
