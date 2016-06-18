@@ -76,8 +76,14 @@ public class RegisterActivity extends AppCompatActivity {
         // do register
         if(validate= true){
             User newUser = new User(username, password, email, phone);
+
             UserHelper userHelper = new UserHelper(RegisterActivity.this);
 
+            // Write a message to the database
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users");
+
+            myRef.setValue(newUser);
 
             if(userHelper.addUser(newUser)){
                 Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();

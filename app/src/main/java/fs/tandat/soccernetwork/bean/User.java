@@ -1,5 +1,7 @@
 package fs.tandat.soccernetwork.bean;
 
+import java.util.Date;
+
 /**
  * Created by dracu on 24/04/2016.
  */
@@ -27,6 +29,9 @@ public class User {
         this.password = password;
         this.email = email;
         this.phone = phone;
+        this.user_type = 0;
+        this.is_verified = false;
+        this.created = new Date().toString();
     }
 
     public User(int user_id, String username, String password, String email, String phone, int status, int district_id, int user_type, String last_login, boolean is_verified, String verification_code, String created, String updated, String deleted) {
